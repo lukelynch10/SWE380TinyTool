@@ -1,10 +1,5 @@
 // components
 //Cohesion LCOM4 
-$(document).ready(function(){
-    $('#calculate').click(function(){
-        calculateLCOM4();
-    });
-});
 
 function calculateLCOM4() {
     let meanAccesses = parseFloat($('#meanAccesses').val());
@@ -42,5 +37,12 @@ function calculateLCOM4() {
 
 //Coupling Fenton and Melton
 function calculateCoupling(){
-    
+
 }
+
+//jquery
+$(document).ready(function(){
+    $('#calculate').click(function(){
+        calculateLCOM4();
+    });
+});
