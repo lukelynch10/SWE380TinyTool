@@ -32,13 +32,23 @@ function calculateLCOM4() {
 
     let lcom4 = numerator / denominator;
 
-    $('#result').val(lcom4.toFixed(2));
+    $('#result').text("Cohesion: " + lcom4.toFixed(10));
 }
 
 //Coupling Fenton and Melton
-function calculateCoupling(){
-
-}
+$(document).ready(function(){
+    $("#couplingForm").submit(function(event){
+      event.preventDefault();
+      let n = parseInt($("#dependencies").val());
+      let i = parseInt($("#dependencyLevel").val());
+      let coupling = calculateCoupling(n, i);
+      $("#couplingResult").text("Coupling " + coupling.toFixed(2));
+    });
+    
+    function calculateCoupling(n, i) {
+      return i + n / (n + 1);
+    }
+  });
 
 //jquery
 $(document).ready(function(){
