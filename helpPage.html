@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cohesion & Coupling Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style_helpPage.css">
+
+
+
+</head>
+<body>
+
+    <div class="title d-flex justify-content-center">
+        <h1>HELP PAGE</h1>
+        <a href = "index.html">
+            <button class="btn-back" data-bs-toggle="modal" data-bs-target="#modal"> <- </button>
+        </a>
+    </div>
+<div class="mycontainer">
+
+    
+    <div class="container d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-primary help" type="button" data-bs-toggle="collapse" data-bs-target="#dropdownContent1" aria-expanded="false" aria-controls="dropdownContent1">
+                Purpose of this Tiny Tool
+            </button>
+            <div class="collapse" id="dropdownContent1">
+                <div class="card card-body">
+                    <T1>Cohesion and Coupling Calculation</T1>
+                    <p>The purpose for this tiny is to calculate levels of cohesion and coupling in a program. It perfroms this by asking a set of questions for each component in a program and allows
+                        the user to input the answers. This gives some infomration about the state of coupling and cohesion for each component. This data is then fed into two formulas LCOM4 for cohesion
+                        and Fenton and Melton for coupling. This is done for each component. These results for each component are then added up and averaged to determine the overall levels of cohesion and
+                        coupling in the program.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-primary help" type="button" data-bs-toggle="collapse" data-bs-target="#dropdownContent2" aria-expanded="false" aria-controls="dropdownContent2">
+                Coupling and Cohesion
+            </button>
+            <div class="collapse" id="dropdownContent2">
+                <div class="card card-body">
+                    <T1>Coupling and Cohesion</T1>
+                    <T2>Coupling</T2>
+                    <p>Coupling is a qualitative measure of the degree to which classes are connected to one another. As classes become more interdependent, coupling increases.
+                       It is best to keep coupling as low as possible since it can lead to a lot of confusion when trying to understand and debug a program.
+                       There are different types of coupling. Here are a few examples
+                    </p>
+
+                    <ul>
+                        <li>Content Coupling - Occurs when one component surreptitiously modifies data that is internal to another component.</li>
+                        <li>Control coupling- Occurs when an operation A() invokes another operation B() and passes a control flag to B. The control flag
+                            then directs logical flow within B. This can cause an unrelated change in B that can result in the necessity to change the meaning
+                            of the control flag that A passes. Overlooking this will result in an error.
+                        </li>
+                        <li>External coupling- Occurs when a component communicates or collaborates with infrastructure components. It is necessary but should
+                            be limited to a small number of components or classes within a system.
+                        </li>
+                    </ul>
+
+                    <T2>Cohesion</T2>
+                    <p>
+                        Cohesion is the qualitative indication of the degree to which a module focuses on just one thing. Cohesion implies that a component or class encapsulates
+                        only attributes and operations that are closely related to each other and to the class or component itself. There are several different types of cohesion,
+                        each having a different level of cohesion. Here are some examples list in order of the level of cohesion.
+                    </p>
+
+                    <ul>
+                        <li>Functional - Exhibited primarily by operations, this level of cohesion occurs when a module performs one and only one computation and then returns a result.
+                        </li>
+                        <li>Layer - Exhibited by packages, components, and classes, this type of cohesion occurs when a higher layer accesses the services of a lower layer, but lower
+                            layers do not access higher layers.
+                        </li>
+                        <li>Communicational - All operations that access the same data are defined within one class. In general, such classes focus solely on the data in question,
+                            accessing and storing it.
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-primary help" type="button" data-bs-toggle="collapse" data-bs-target="#dropdownContent3" aria-expanded="false" aria-controls="dropdownContent3">
+                LCOM4 formula
+            </button>
+            <div class="collapse" id="dropdownContent3">
+                <div class="card card-body">
+                    <T2>LCOM4 Formula</T2>
+                    <p> The LCOM4 formula is a metric used to measure the levels of cohesion in a class. It does this by measuring the number of connected components in a class.
+                    A connection is a set of related methods. Ideally there should only be one connected component in each class. The formula is below. 
+                    In order to use the formula you must:
+                    </p>
+
+                    <ul>
+                        <li>First calculate the mean number of access per attribute across all methods in the class. </li>
+                        <li>From there you need to count the number of distinct attributes accessed for each method in the class (Ni)</li>
+                        <li>Then you need to calculate the sum of the squares of these counts.</li>
+                        <li>After you need to calculate the mean number of method invocations across all methods in the class</li>
+                        <li>Then you need to calculate the sum of the squares of these counts.</li>
+                        <li>Now you need to subtract the sum of the squares of method invocations from the sun of the squares of attributes accessed.</li>
+                        <li>If the result is negative set it to 0</li>
+                        <li>Then divide the result by the product of the mean number of access per attribute (M) and the mean number of method invocations</li>
+                        <li>The final result is LCOM4</li>
+                    </ul>
+
+                    <img src="Images/LCOM4_Fomula.png" alt="Image" class="img-fluid">
+                    <ul>
+                        <li>LCOM4 = 1   - Indicates a good level of cohesion </li>
+                        <li>LCOM4 >= 2   - Indicates the class should be split into smaller classes</li>
+                        <li>LCOM4 = 0   - Indicates there are no methods in the class which is bad.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-primary help" type="button" data-bs-toggle="collapse" data-bs-target="#dropdownContent4" aria-expanded="false" aria-controls="dropdownContent4">
+                Fenton and Melton Formula
+            </button>
+            <div class="collapse" id="dropdownContent4">
+                <div class="card card-body">
+                    <T2> Fenton and Melton Formula</T2>
+                    <p> The Fenton and Melton metric is used to measure the degree of an architectures coupling. It does this by obtaining the number of direct dependencies 
+                        that exist between two components as well as a 1-5 value that indicates the level of coupling that exists between the two components. These 
+                        values are plugged into the formula below with:
+                    </p>
+
+                    <eq> C( a , b ) = i + n / (n + 1) </eq>
+
+                    <ul>
+                        <li>i - representing the level of coupling</li>
+                        <li>n - representing the number of direct dependencies.</li>
+                        <li>a & b - representing the two components</li>
+                        <li>C  - representing the level of coupling</li>
+                    </ul>
+
+
+                <p> The lower the value the lower amount of coupling there is. Lower values are good since they indicate a lower amount of coupling which
+                    is what you want your program to have.
+                </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-primary help" type="button" data-bs-toggle="collapse" data-bs-target="#dropdownContent5" aria-expanded="false" aria-controls="dropdownContent5">
+                How to input data
+            </button>
+            <div class="collapse" id="dropdownContent5">
+                <div class="card card-body">
+                    Dropdown Content
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-primary help" type="button" data-bs-toggle="collapse" data-bs-target="#dropdownContent6" aria-expanded="false" aria-controls="dropdownContent6">
+                Managing Components
+            </button>
+            <div class="collapse" id="dropdownContent6">
+                <div class="card card-body">
+                    Dropdown Content
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-primary help" type="button" data-bs-toggle="collapse" data-bs-target="#dropdownContent7" aria-expanded="false" aria-controls="dropdownContent7">
+                Managing Methods
+            </button>
+            <div class="collapse" id="dropdownContent7">
+                <div class="card card-body">
+                    Dropdown Content
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-primary help" type="button" data-bs-toggle="collapse" data-bs-target="#dropdownContent8" aria-expanded="false" aria-controls="dropdownContent8">
+                What your scores say about your software!
+            </button>
+            <div class="collapse" id="dropdownContent8">
+                <div class="card card-body">
+                    Dropdown Content
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+<div class="container d-flex justify-content-center">
+    <div class="dropdown">
+        <button class="btn btn-primary help" type="button" data-bs-toggle="collapse" data-bs-target="#dropdownConten10" aria-expanded="false" aria-controls="dropdownConten10">
+            Authors
+        </button>
+        <div class="collapse" id="dropdownConten10">
+            <div class="card card-body">
+                <eq>Created by Luke Lynch, Tyler Judd, Alex Stockford, and Radhe Patel</eq> 
+            </div>
+        </div>
+    </div>
+</div>
+</div>  
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    </body>
+</html>
