@@ -56,3 +56,33 @@ $(document).ready(function(){
         calculateLCOM4();
     });
 });
+
+
+var containerCount = 0;
+function addComponent() {
+    containerCount++;
+  // Create a new container element
+  var container = document.createElement("div");
+  container.className = "container-component";
+  
+  var card = document.createElement("div");
+  card.className = "card-component";
+  card.innerHTML = "Name:<br><br>Coupled:<br><br>Cohesion:<br>" + containerCount
+
+  var deleteButton = document.createElement("button");
+  deleteButton.className = "btn btn-delete";
+
+  var editButton = document.createElement("button");
+  editButton.className = "btn btn-edit";
+
+  deleteButton.addEventListener('click', function() {
+    container.remove();
+  });
+
+  container.appendChild(card);
+  card.appendChild(deleteButton);
+  card.appendChild(editButton);
+
+  // Append the new container to the container wrapper
+  document.getElementById("containerWrapper").appendChild(container);
+}
