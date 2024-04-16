@@ -1,6 +1,6 @@
 // components
 //Cohesion LCOM4 
-let lcom4;
+let lcom4Added = 0;
 function calculateLCOM4() {
     let meanAccesses = parseFloat($('#meanAccesses').val());
     let methodAttributesStr = $('#methodAttributes').val().trim();
@@ -30,9 +30,8 @@ function calculateLCOM4() {
     let numerator = Math.max(0, sumAttributesSquared - sumInvocationsSquared);
     let denominator = Math.max(1, (meanAccesses - (sumInvocationsSquared / meanAccesses)) * (meanAccesses - 1));
 
-    lcom4 = numerator / denominator;
-    console.log(lcom4)
-    
+    let lcom4 = numerator / denominator;
+        
     $('#result').text(lcom4.toFixed(10));
 }
 
@@ -55,9 +54,8 @@ $(document).ready(function(){
 function tally(){
     let lcom4Text = $('#result').text();
     let lcom4number = Number(lcom4Text);
-    let lcom4Added;
     lcom4Added += lcom4number;
-    console.log(lcom4Added)
+    $("#totalCohesion").text(lcom4Added);
 }
 
 //jquery
