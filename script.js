@@ -1,6 +1,6 @@
 // components
 //Cohesion LCOM4 
-
+let lcom4;
 function calculateLCOM4() {
     let meanAccesses = parseFloat($('#meanAccesses').val());
     let methodAttributesStr = $('#methodAttributes').val().trim();
@@ -30,9 +30,10 @@ function calculateLCOM4() {
     let numerator = Math.max(0, sumAttributesSquared - sumInvocationsSquared);
     let denominator = Math.max(1, (meanAccesses - (sumInvocationsSquared / meanAccesses)) * (meanAccesses - 1));
 
-    let lcom4 = numerator / denominator;
-
-    $('#result').text("Cohesion: " + lcom4.toFixed(10));
+    lcom4 = numerator / denominator;
+    console.log(lcom4)
+    
+    $('#result').text(lcom4.toFixed(10));
 }
 
 //Coupling Fenton and Melton
@@ -50,9 +51,19 @@ $(document).ready(function(){
     }
   });
 
+// tally
+function tally(){
+    let lcom4Text = $('#result').text();
+    let lcom4number = Number(lcom4Text);
+    let lcom4Added;
+    lcom4Added += lcom4number;
+    console.log(lcom4Added)
+}
+
 //jquery
 $(document).ready(function(){
     $('#calculate').click(function(){
         calculateLCOM4();
+        tally();
     });
 });
