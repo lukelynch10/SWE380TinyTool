@@ -1,6 +1,8 @@
 // components
 //Cohesion LCOM4 
+let coupling = "";
 let lcom4Added = 0;
+let couplingAdded = 0;
 function calculateLCOM4() {
     let meanAccesses = parseFloat($('#meanAccesses').val());
     let methodAttributesStr = $('#methodAttributes').val().trim();
@@ -41,8 +43,11 @@ $(document).ready(function(){
       event.preventDefault();
       let n = parseInt($("#dependencies").val());
       let i = parseInt($("#dependencyLevel").val());
-      let coupling = calculateCoupling(n, i);
-      $("#couplingResult").text("Coupling " + coupling.toFixed(2));
+      coupling = calculateCoupling(n, i);
+      $("#couplingResult").text(coupling.toFixed(2));
+      couplingAdded += coupling;
+      $('#totalCoupling').text(couplingAdded);
+      
     });
     
     function calculateCoupling(n, i) {
@@ -55,7 +60,7 @@ function tally(){
     let lcom4Text = $('#result').text();
     let lcom4number = Number(lcom4Text);
     lcom4Added += lcom4number;
-    $("#totalCohesion").text(lcom4Added);
+    $("#totalCohesion").text(lcom4Added); 
 }
 
 //jquery
