@@ -91,3 +91,46 @@
   background-image: url('Images/Header_background.jpg');
   background-size: cover;
   background-position: center;}
+
+body{
+  background-color: #fdfbee;
+}
+
+.header{
+  padding: 60px;
+  text-align: left;
+  background-color: #3d3d3d;
+  font-size: 40px;
+  color: #ffffff;
+}
+
+.helpButton{
+  position: absolute; 
+  right: 60px;
+  top: 46px;
+}
+
+
+#componentName{
+  padding: 5px;
+  text-align: center;
+    
+}
+
+.coupForm{
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  min-width: 80%;
+}
+
+.centerBox{
+  display: flex;
+  flex-direction: column;
+  margin-left:20%;
+  margin-right:20%;
+  margin-top: 2%;
+  align-items: center;
+  justify-content: space-around;
+    
+}
