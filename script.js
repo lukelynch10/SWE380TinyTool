@@ -109,9 +109,11 @@ function add_componentNameInput(dropdownMenu, centerContainer)
     dropdownMenu.classList.remove("show");
 });
 
-CancelButton.addEventListener("click", function() {
-  dropdownMenu.classList.remove("show");
-});
+  CancelButton.addEventListener("click", function() {
+    dropdownMenu.classList.remove("show");
+  });
+
+
 }
 
 function add_dependencyInput(dependencyContainer, number)
@@ -224,7 +226,7 @@ function addCohesionForm(centerContainer)
   cohesionTitle.innerHTML = "Cohesion Data";
   cohesionTitle.style = "font-size: 50px; font-weight: bold; margin-top: 10px;"
 
-  let cohesionForm = document.createElement("form");
+  let cohesionForm = document.createElement("div");
   cohesionForm.className = "form";
 
 
@@ -237,18 +239,170 @@ function addCohesionForm(centerContainer)
   MethodsLabel.innerHTML = "Methods:"
   MethodsLabel.style = "font-size: 30px; font-weight: bold; margin-top: 10px";
 
-  
-  let Add_Method_button = document.createElement("button");
-  Add_Method_button.className = "btn btn-primary";
-  Add_Method_button.innerHTML = "+Add a Method";
+
+
+  let AddMethod_Button = document.createElement("button");
+  AddMethod_Button.className = "btn btn-primary";
+  AddMethod_Button.innerHTML = "+Add Method";
+  AddMethod_Button.style = "margin-left: 10px;"
 
   centerContainer.appendChild(cohesionTitle);
 
   centerContainer.appendChild(cohesionForm);
   cohesionForm.appendChild(MethodsLabelContainer);
   MethodsLabelContainer.appendChild(MethodsLabel);
-  cohesionForm.appendChild(Add_Method_button);
+  cohesionForm.appendChild(AddMethod_Button);
+
+
+  AddMethod_Button.addEventListener("click", function() {
+    addMethod(cohesionForm);
+  });
 }
+
+function addMethod(cohesion_Form)
+{
+  let container = document.createElement("div");
+  container.className = "container-method";
+  
+  let card = document.createElement("div");
+  card.className = "card-method";
+  card.innerHTML = "Method Name"
+
+  let deleteButton = document.createElement("button");
+  deleteButton.className = "btn btn-method-delete";
+
+  let editButton = document.createElement("button");
+  editButton.className = "btn btn-method-edit";
+
+
+  let popUp_MenuMethod = document.createElement("div");
+  popUp_MenuMethod.className = "pop-menu-method"
+  popUp_MenuMethod.style = "background-color: #ffffff; "
+  popUp_MenuMethod.style.display = "none";
+
+
+
+  addMethodAttribute(popUp_MenuMethod);
+
+  container.appendChild(card);
+  card.appendChild(deleteButton);
+  card.appendChild(editButton);
+  cohesion_Form.appendChild(container);
+
+  card.appendChild(popUp_MenuMethod);
+
+  
+  deleteButton.addEventListener('click', function() {
+    container.remove();
+  });
+
+  editButton.addEventListener('click', function() {
+    popUp_MenuMethod.style.display = "block";
+  });
+}
+
+function addMethodAttribute(popUp_MenuMethod)
+{
+  let buttons = document.createElement("div");
+  buttons.className = "d-grid gap-2 d-md-block";
+  buttons.style = "margin-bottom: 10px; background-color: #ffffff;"
+
+  let CancelButton = document.createElement("button");
+  CancelButton.className = "btn btn-danger";
+  CancelButton.innerHTML = "Cancel";
+  CancelButton.style = "margin-right: 100px; width: 100px;"
+
+  let SaveButton = document.createElement("button");
+  SaveButton.className = "btn btn-primary";
+  SaveButton.innerHTML = "Save";
+  SaveButton.style = "margin-left: 100px; width: 100px;"
+
+  let Box = document.createElement("div");
+  Box.className = "Box";
+  Box.style.backgroundColor = "#ffffff";
+
+  let Title = document.createElement("div");
+  Title.className = "header";
+  Title.innerHTML = "Method Information";
+  Title.style.textAlign = "center";
+
+
+
+  let methodNameContainer = document.createElement("div");
+  methodNameContainer.className = "methodNameContainer";
+  methodNameContainer.style = "display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 20px;, margin-bottom: 40px; background-color: #ffffff;"
+
+  let methodNameLabel = document.createElement("label");
+  methodNameLabel.classname = "methodNameLabel";
+  methodNameLabel.innerHTML = "Name:  ";
+  methodNameLabel.style = "margin-right: 15px;";
+
+  let methodNameInput = document.createElement("input");
+  methodNameInput.type = "text";
+  methodNameInput.id = "methodName";
+  methodNameInput.placeholder = "Enter method name";
+
+
+
+  let numAttributesContainer = document.createElement("div");
+  numAttributesContainer.className = "numAttributesContainer";
+  numAttributesContainer.style = "display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 100px; margin-bottom: 30px; background-color: #ffffff;"
+
+  let NumAttributesLabel = document.createElement("label");
+  NumAttributesLabel.classname = "NumAttributes";
+  NumAttributesLabel.innerHTML = "Number of distinct accessed attributes:";
+  NumAttributesLabel.style = "margin-right: 10px;";
+
+
+  let NumAttributesInput = document.createElement("input");
+  NumAttributesInput.type = "text";
+  NumAttributesInput.id = "NumAttributesInput";
+
+
+  let numInvokesContainer = document.createElement("div");
+  numInvokesContainer.className = "numInvokesContainer";
+  numInvokesContainer.style = "display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 100px; margin-bottom: 100px;"
+
+  let numInvokesLabel = document.createElement("label");
+  numInvokesLabel.classname = "numInvokesLabel";
+  numInvokesLabel.innerHTML = "Number of times this method invlokes another method: ";
+  numInvokesLabel.style = "margin-right: 10px;";
+
+
+  let numInvokesInput = document.createElement("input");
+  numInvokesInput.type = "text";
+  numInvokesInput.id = "numInvokesInput";
+
+  popUp_MenuMethod.appendChild(Box);
+  Box.appendChild(Title);
+  Box.appendChild(methodNameContainer);
+  methodNameContainer.appendChild(methodNameLabel);
+  methodNameContainer.appendChild(methodNameInput);
+
+  Box.appendChild(numAttributesContainer);
+  numAttributesContainer.appendChild(NumAttributesLabel);
+  numAttributesContainer.appendChild(NumAttributesInput);
+
+  Box.appendChild(numInvokesContainer);
+  numInvokesContainer.appendChild(numInvokesLabel);
+  numInvokesContainer.appendChild(numInvokesInput);
+
+  Box.appendChild(buttons);
+  buttons.appendChild(CancelButton);
+  buttons.appendChild(SaveButton);
+
+
+  SaveButton.addEventListener("click", function() {
+    popUp_MenuMethod.style.display = "none";
+  });
+
+  CancelButton.addEventListener("click", function() {
+    popUp_MenuMethod.style.display = "none";
+  });
+
+
+}
+
 
 
 function addComponent() {
@@ -265,12 +419,13 @@ function addComponent() {
 
   let editButton = document.createElement("button");
   editButton.className = "btn btn-edit";
+  editButton.style.alignItems = "left";
 
 
   let dropdownMenu = document.createElement("div");
   dropdownMenu.className = "dropdown-menu"
   dropdownMenu.style = "background-color: #fdfbee;"
-
+  dropdownMenu.style.overflowY = "scroll";
 
   let centerBox = document.createElement("div");
   centerBox.className = "center-box";
@@ -283,8 +438,6 @@ function addComponent() {
   addCouplingForm(centerBox);
 
   addCohesionForm(centerBox);
-
-
 
   deleteButton.addEventListener('click', function() {
     container.remove();

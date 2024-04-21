@@ -36,6 +36,24 @@
     box-sizing: border-box;
 }
 
+.card-method
+{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 40px;
+    margin-bottom: 10px;
+    position: relative;
+    background-color : #c7c7c7;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: auto;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    box-sizing: border-box;
+}
+
 .btn-delete
 {
     position: absolute;
@@ -55,6 +73,36 @@
 {
     position: absolute;
     bottom: 0px;
+    right: 5px;
+    padding: 10px 20px;
+    width:  60px;
+    height: 60px;
+    margin-bottom: 20px;
+    background-image: url('Images/Edit_Icon.png');
+    background-size: cover;
+    background-position: center;
+}
+
+
+.btn-method-delete
+{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px 20px;
+    width: 45px;
+    height: 45px;
+    margin-bottom: 20px;
+    background-image: url('Images/Delete_Icon.png');
+    background-size: cover;
+    background-position: center;
+
+}
+
+.btn-method-edit
+{
+    position: absolute;
+    top: 2px;
     right: 5px;
     padding: 10px 20px;
     width:  60px;
@@ -151,14 +199,18 @@ body, html {
   z-index: 1000; /* ensure it's above other content */
 }
 
-.dropdown-menu-fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+
+.pop-menu-method {
+  position: absolute;
+  top: -500%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  width: 120%;
   height: 100%;
-  overflow-y: auto; /* enable scrolling if needed */
+  background-color: #ffffff;
 }
+
 
 .form
 {
