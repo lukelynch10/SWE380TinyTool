@@ -37,6 +37,9 @@ function calculateLCOM4() {
     $('#result').text(lcom4.toFixed(10));
 }
 
+
+
+
 //Coupling Fenton and Melton
 $(document).ready(function(){
     $("#couplingForm").submit(function(event){
@@ -49,11 +52,27 @@ $(document).ready(function(){
       $('#totalCoupling').text(couplingAdded);
       
     });
-    
+
     function calculateCoupling(n, i) {
       return i + n / (n + 1);
     }
   });
+
+
+
+
+//Coupling Fenton and Melton
+function calculateCoup(numberDepencies, DepencyLevel, couplinglevel) {
+  console.log(couplinglevel);
+  let n = parseInt(numberDepencies)
+  let i = parseInt(DepencyLevel);
+  couplinglevel = i + n / (n + 1);
+  $("#couplingResult").text(couplinglevel.toFixed(2));
+  couplingAdded += couplinglevel;
+  $('#totalCoupling').text(couplingAdded.toFixed(2));
+  return couplinglevel.toFixed(2);
+  }
+
 
 // tally
 function tally(){
@@ -72,17 +91,155 @@ $(document).ready(function(){
 });
 
 
-function add_componentNameInput(dropdownMenu, centerContainer)
-{
 
+function addComponent() {
+  // Create a new container element
+
+  let numDepencies = 0;
+  let DepencyLevel = 0;
+  let couplingLevelValue = 0;
+
+  let container = document.createElement("div");
+  container.className = "container-component";
+  
+  let card = document.createElement("div");
+  card.className = "card-component";
+
+  let nameContainer = document.createElement("div");
+  nameContainer.className = "nameContainer";
+  nameContainer.style = "margin-left: -30px;"
+
+  let name = document.createElement("label");
+  name.className = "name";
+  name.innerHTML = "Component: ";
+  name.style = "margin-right: 10px;"
+
+  let ComponentName = document.createElement("p");
+  ComponentName.className = "text";
+  ComponentName.id = "ComponentName";
+  ComponentName.style = "display: inline-block;"
+
+
+  let cohesionContainer = document.createElement("div");
+  cohesionContainer.className = "cohesionContainer";
+  cohesionContainer.style = "margin-left: -30px;"
+
+  let CohesionLevel_Label = document.createElement("label");
+  CohesionLevel_Label.className = "CohesionLevel_Label";
+  CohesionLevel_Label.innerHTML = "Cohesion Level: ";
+
+  let CohesionLevel = document.createElement("p");
+  CohesionLevel.className = "CohesionLevel";
+  CohesionLevel.id = "CohesionLevel";
+
+
+  let couplingContainer = document.createElement("div");
+  couplingContainer.className = "couplingContainer";
+  couplingContainer.style = "margin-left: -30px;"
+
+  let couplingLevel_Label = document.createElement("label");
+  couplingLevel_Label.className = "couplingLevel_Label";
+  couplingLevel_Label.innerHTML = "Coupling Level: ";
+
+  let couplingLevel = document.createElement("p");
+  couplingLevel.className = "couplingLevel";
+  couplingLevel.id = "couplingLevel";
+
+  let deleteButton = document.createElement("button");
+  deleteButton.className = "btn btn-delete";
+
+  let editButton = document.createElement("button");
+  editButton.className = "btn btn-edit";
+  editButton.style.alignItems = "left";
+
+
+  let dropdownMenu = document.createElement("div");
+  dropdownMenu.className = "dropdown-menu"
+  dropdownMenu.style = "background-color: #fdfbee;"
+  dropdownMenu.style.overflowY = "scroll";
+
+  let centerBox = document.createElement("div");
+  centerBox.className = "center-box";
+
+  add_componentNameInput(dropdownMenu, centerBox, ComponentName);
+
+  dropdownMenu.appendChild(centerBox);
+
+
+  addCouplingForm(centerBox);
+  addCohesionForm(centerBox);
+
+
+  deleteButton.addEventListener('click', function() {
+    couplingAdded -= couplingLevelValue;
+    $('#totalCoupling').text(couplingAdded.toFixed(2));
+    container.remove();
+  });
+
+  editButton.addEventListener('click', function() {
+    dropdownMenu.classList.toggle("show");
+  });
+
+
+  container.appendChild(card);
+
+  card.appendChild(nameContainer);
+  nameContainer.appendChild(name);
+  nameContainer.appendChild(ComponentName);
+
+  card.appendChild(cohesionContainer);
+  cohesionContainer.appendChild(CohesionLevel_Label);
+  cohesionContainer.appendChild(CohesionLevel);
+
+  card.appendChild(couplingContainer);
+  couplingContainer.appendChild(couplingLevel_Label);
+  couplingContainer.appendChild(couplingLevel);
+
+  card.appendChild(deleteButton);
+  card.appendChild(editButton);
+
+  card.appendChild(dropdownMenu);
+  document.getElementById("containerWrapper").appendChild(container);
+
+
+
+
+function add_componentNameInput(dropdownMenu, centerContainer, Name)
+{
+  var CompName = " "
   let header = document.createElement("div");
   header.className = "header";
-  header.innerHTML = "Overall Coupling:<br>Overall Cohesion:";
+
+  let headerCouplingContainer = document.createElement("div");
+  headerCouplingContainer.className = "headerCouplingContainer";
+
+  let couplingLabel = document.createElement("label");
+  couplingLabel.className = "couplingLabel";
+  couplingLabel.innerHTML = "Overall Coupling: ";
+
+  let couplingValue = document.createElement("p");
+  couplingValue.className = "couplingValue";
+
+  let headerCohesionContainer = document.createElement("div");
+  headerCohesionContainer.className = "headerCohesionContainer";
+
+  let cohesionLabel = document.createElement("label");
+  cohesionLabel.className = "cohesionLabel";
+  cohesionLabel.innerHTML = "Overall Cohesion: ";
+
+  let cohesionValue = document.createElement("p");
+  cohesionValue.className = "cohesionValue";
+
+
 
   let componentName = document.createElement("input");
   componentName.type = "text";
   componentName.id = "componentName";
   componentName.placeholder = "Enter component name";
+
+  componentName.addEventListener("input", function() {
+    CompName = this.value;
+  });
 
   let buttons = document.createElement("div");
   buttons.className = "d-grid gap-2 d-md-block";
@@ -98,6 +255,13 @@ function add_componentNameInput(dropdownMenu, centerContainer)
   SaveButton.style = "margin-left: 10px;"
 
   dropdownMenu.appendChild(header);
+  header.appendChild(headerCouplingContainer);
+  headerCouplingContainer.appendChild(couplingLabel);
+  headerCouplingContainer.appendChild(couplingValue);
+
+  header.appendChild(headerCohesionContainer);
+  headerCohesionContainer.appendChild(cohesionLabel);
+  headerCohesionContainer.appendChild(cohesionValue);
 
   centerContainer.appendChild(componentName);
 
@@ -106,8 +270,16 @@ function add_componentNameInput(dropdownMenu, centerContainer)
   buttons.appendChild(SaveButton);
 
   SaveButton.addEventListener("click", function() {
+    Name.innerHTML = CompName;
+    couplingAdded -= couplingLevelValue;
+    couplingLevelValue = calculateCoup(numDepencies, DepencyLevel, couplingLevelValue);
+    couplingLevel.innerHTML = couplingLevelValue;
+    couplingValue.innerHTML = couplingLevelValue;
+
+
     dropdownMenu.classList.remove("show");
 });
+
 
   CancelButton.addEventListener("click", function() {
     dropdownMenu.classList.remove("show");
@@ -126,6 +298,7 @@ function add_dependencyInput(dependencyContainer, number)
   radioButton.style = "margin-right: 10px;"
 
 
+
   var label = document.createElement("label");
   label.style = "margin-right: 2px;"
 
@@ -141,10 +314,13 @@ function add_dependencyInput(dependencyContainer, number)
 
   dependencyContainer.appendChild(radioButton_container);
 
+  radioButton.addEventListener("change", function() {
+    DepencyLevel = radioButton.value;
+});
 }
 
 
-function addCouplingForm(centerContainer)
+function addCouplingForm(centerContainer, numberDepencies, DepLevel)
 {
 
   let couplingForm = document.createElement("form");
@@ -186,6 +362,7 @@ function addCouplingForm(centerContainer)
   add_dependencyInput(dependencyInputClass, 4);
   add_dependencyInput(dependencyInputClass, 5);
 
+  
 
 
   let numDependancies_container = document.createElement("div");
@@ -198,8 +375,14 @@ function addCouplingForm(centerContainer)
 
   let numDependanciesInput = document.createElement("input");
   numDependanciesInput.type = "text";
-  numDependanciesInput.id = "numDependanciesInput";
+  numDependanciesInput.id = "dependencies";
+  numDependanciesInput.name = "dependencies";
   numDependanciesInput.placeholder = "Number of Dependencies";
+
+
+  numDependanciesInput.addEventListener("input", function() {
+    numDepencies = numDependanciesInput.value;
+  });
 
 
   centerContainer.appendChild(couplingTitle);
@@ -301,6 +484,7 @@ function addMethod(cohesion_Form)
   });
 }
 
+
 function addMethodAttribute(popUp_MenuMethod)
 {
   let buttons = document.createElement("div");
@@ -399,62 +583,8 @@ function addMethodAttribute(popUp_MenuMethod)
   CancelButton.addEventListener("click", function() {
     popUp_MenuMethod.style.display = "none";
   });
-
+}
 
 }
 
-
-
-function addComponent() {
-  // Create a new container element
-  let container = document.createElement("div");
-  container.className = "container-component";
-  
-  let card = document.createElement("div");
-  card.className = "card-component";
-  card.innerHTML = "Name:<br><br>Coupled:<br><br>Cohesion:<br>"
-
-  let deleteButton = document.createElement("button");
-  deleteButton.className = "btn btn-delete";
-
-  let editButton = document.createElement("button");
-  editButton.className = "btn btn-edit";
-  editButton.style.alignItems = "left";
-
-
-  let dropdownMenu = document.createElement("div");
-  dropdownMenu.className = "dropdown-menu"
-  dropdownMenu.style = "background-color: #fdfbee;"
-  dropdownMenu.style.overflowY = "scroll";
-
-  let centerBox = document.createElement("div");
-  centerBox.className = "center-box";
-
-  add_componentNameInput(dropdownMenu, centerBox);
-
-  dropdownMenu.appendChild(centerBox);
-
-
-  addCouplingForm(centerBox);
-
-  addCohesionForm(centerBox);
-
-  deleteButton.addEventListener('click', function() {
-    container.remove();
-  });
-
-  editButton.addEventListener('click', function() {
-    dropdownMenu.classList.toggle("show");
-  });
-
-
-  container.appendChild(card);
-  card.appendChild(deleteButton);
-  card.appendChild(editButton);
-
-  card.appendChild(dropdownMenu);
-
-
-  document.getElementById("containerWrapper").appendChild(container);
-}
 
