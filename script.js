@@ -3,6 +3,8 @@
 let coupling = "";
 let lcom4Added = 0;
 let couplingAdded = 0;
+let cohesionAdded = 0;
+
 function calculateLCOM4() {
     let meanAccesses = parseFloat($('#meanAccesses').val());
     let methodAttributesStr = $('#methodAttributes').val().trim();
@@ -16,6 +18,7 @@ function calculateLCOM4() {
     let methodAttributes = methodAttributesStr.split(',').map(function(item) {
         return parseInt(item.trim());
     });
+
 
     let methodInvocations = methodInvocationsStr.split(',').map(function(item) {
         return parseInt(item.trim());
@@ -33,8 +36,51 @@ function calculateLCOM4() {
     let denominator = Math.max(1, (meanAccesses - (sumInvocationsSquared / meanAccesses)) * (meanAccesses - 1));
 
     let lcom4 = numerator / denominator;
-        
+    
     $('#result').text(lcom4.toFixed(10));
+  }
+
+function calLCOM4(DistinctAttributes, Invokes, CohesionLevel) {
+  let methodAttributes = DistinctAttributes;
+  let methodInvocations = Invokes;
+  let meanAccesses = 0;
+
+
+  if (isNaN(meanAccesses) || methodAttributes === '' || methodInvocations === '') {
+      alert('Please fill all fields with valid numbers');
+      return;
+  }
+
+  console.log(methodAttributes);
+  console.log(methodInvocations);
+
+  let sumAttributesSquared = 0;
+  let sumInvocationsSquared = 0;
+
+  
+  for (let i = 0; i < methodAttributes.length; i++) {
+    
+      sumAttributesSquared += Math.pow(methodAttributes[i], 2);
+      sumInvocationsSquared += Math.pow(methodInvocations[i], 2);
+      meanAccesses = meanAccesses + parseInt(methodAttributes[i]);
+  }
+
+    // console.log(meanAccesses);
+
+  meanAccesses = parseFloat(meanAccesses / methodAttributes.length);
+
+  console.log(meanAccesses);
+
+  let numerator = Math.max(0, sumAttributesSquared - sumInvocationsSquared);
+  let denominator = Math.max(1, (meanAccesses - (sumInvocationsSquared / meanAccesses)) * (meanAccesses - 1));
+
+  let lcom4 = numerator / denominator;
+
+  cohesionAdded += lcom4;
+  $('#totalCohesion').text(cohesionAdded.toFixed(2));
+  return lcom4.toFixed(2);
+
+
 }
 
 
@@ -63,7 +109,6 @@ $(document).ready(function(){
 
 //Coupling Fenton and Melton
 function calculateCoup(numberDepencies, DepencyLevel, couplinglevel) {
-  console.log(couplinglevel);
   let n = parseInt(numberDepencies)
   let i = parseInt(DepencyLevel);
   couplinglevel = i + n / (n + 1);
@@ -98,6 +143,11 @@ function addComponent() {
   let numDepencies = 0;
   let DepencyLevel = 0;
   let couplingLevelValue = 0;
+
+  let cohesionFormValue = 0;
+
+  let numDisAttributesArray = [];
+  let numInvokesArray = [];
 
   let container = document.createElement("div");
   container.className = "container-component";
@@ -172,7 +222,9 @@ function addComponent() {
 
   deleteButton.addEventListener('click', function() {
     couplingAdded -= couplingLevelValue;
+    cohesionAdded -= cohesionFormValue;
     $('#totalCoupling').text(couplingAdded.toFixed(2));
+    $('#totalCohesion').text(cohesionAdded.toFixed(2));
     container.remove();
   });
 
@@ -275,6 +327,12 @@ function add_componentNameInput(dropdownMenu, centerContainer, Name)
     couplingLevelValue = calculateCoup(numDepencies, DepencyLevel, couplingLevelValue);
     couplingLevel.innerHTML = couplingLevelValue;
     couplingValue.innerHTML = couplingLevelValue;
+
+    cohesionAdded -= cohesionFormValue;
+    cohesionFormValue = calLCOM4(numDisAttributesArray, numInvokesArray, cohesionFormValue);
+    cohesionValue.innerHTML = cohesionFormValue;
+    CohesionLevel.innerHTML = cohesionFormValue;
+
 
 
     dropdownMenu.classList.remove("show");
@@ -444,12 +502,24 @@ function addCohesionForm(centerContainer)
 
 function addMethod(cohesion_Form)
 {
+  
+  let numDisAttributes = 0;
+  let numInvokes = 0;
+
+  let previousNumDisAttributes = 0;
+  let previousNumInvokes = 0;
+
+
   let container = document.createElement("div");
   container.className = "container-method";
   
   let card = document.createElement("div");
   card.className = "card-method";
-  card.innerHTML = "Method Name"
+
+  let MethodName = document.createElement("p");
+  MethodName.className = "text";
+  MethodName.id = "MethodName";
+  MethodName.innerHTML = "Method Name";
 
   let deleteButton = document.createElement("button");
   deleteButton.className = "btn btn-method-delete";
@@ -457,17 +527,16 @@ function addMethod(cohesion_Form)
   let editButton = document.createElement("button");
   editButton.className = "btn btn-method-edit";
 
-
   let popUp_MenuMethod = document.createElement("div");
   popUp_MenuMethod.className = "pop-menu-method"
   popUp_MenuMethod.style = "background-color: #ffffff; "
-  popUp_MenuMethod.style.display = "none";
 
 
 
   addMethodAttribute(popUp_MenuMethod);
 
   container.appendChild(card);
+  card.appendChild(MethodName);
   card.appendChild(deleteButton);
   card.appendChild(editButton);
   cohesion_Form.appendChild(container);
@@ -476,115 +545,155 @@ function addMethod(cohesion_Form)
 
   
   deleteButton.addEventListener('click', function() {
+
+    var attribIndex = numDisAttributesArray.indexOf(numDisAttributes);
+    var invokeIndex = numInvokesArray.indexOf(numInvokes);
+
+
+    if(attribIndex !== -1 && invokeIndex !== -1)
+    {
+      numDisAttributesArray.splice(attribIndex, 1);
+      numInvokesArray.splice(invokeIndex, 1);
+    }
+
     container.remove();
   });
 
   editButton.addEventListener('click', function() {
+    previousNumInvokes = numInvokes;
+    previousNumDisAttributes = numDisAttributes;
     popUp_MenuMethod.style.display = "block";
   });
+
+
+
+
+  function addMethodAttribute(popUp_MenuMethod)
+  {
+
+    let buttons = document.createElement("div");
+    buttons.className = "d-grid gap-2 d-md-block";
+    buttons.style = "margin-bottom: 10px; background-color: #fff0d0;"
+
+    let CancelButton = document.createElement("button");
+    CancelButton.className = "btn btn-danger";
+    CancelButton.innerHTML = "Cancel";
+    CancelButton.style = "margin-right: 100px; width: 100px;"
+
+    let SaveButton = document.createElement("button");
+    SaveButton.className = "btn btn-primary";
+    SaveButton.innerHTML = "Save";
+    SaveButton.style = "margin-left: 100px; width: 100px;"
+
+    let Box = document.createElement("div");
+    Box.className = "Box";
+    Box.style.backgroundColor = "#fff0d0";
+
+    let Title = document.createElement("div");
+    Title.className = "header";
+    Title.innerHTML = "Method Information";
+    Title.style.textAlign = "center";
+
+
+    let methodNameContainer = document.createElement("div");
+    methodNameContainer.className = "methodNameContainer";
+    methodNameContainer.style = "display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 20px;, margin-bottom: 40px; background-color: #fff0d0;"
+
+    let methodNameLabel = document.createElement("label");
+    methodNameLabel.classname = "methodNameLabel";
+    methodNameLabel.innerHTML = "Name:  ";
+    methodNameLabel.style = "margin-right: 15px;";
+
+    let methodNameInput = document.createElement("input");
+    methodNameInput.type = "text";
+    methodNameInput.id = "methodName";
+    methodNameInput.placeholder = "Enter method name";
+
+    methodNameInput.addEventListener("input", function() {
+      MethodName.innerHTML = this.value;
+    });
+
+
+
+    let numAttributesContainer = document.createElement("div");
+    numAttributesContainer.className = "numAttributesContainer";
+    numAttributesContainer.style = "display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 100px; margin-bottom: 30px; background-color: #fff0d0;"
+
+    let NumAttributesLabel = document.createElement("label");
+    NumAttributesLabel.classname = "NumAttributes";
+    NumAttributesLabel.innerHTML = "Number of distinct accessed attributes:";
+    NumAttributesLabel.style = "margin-right: 10px;";
+
+    let NumAttributesInput = document.createElement("input");
+    NumAttributesInput.type = "text";
+    NumAttributesInput.id = "NumAttributesInput";
+    NumAttributesInput.placeholder = "type a number";
+
+    NumAttributesInput.addEventListener("input", function() {
+      numDisAttributes = this.value;
+    });
+
+
+    let numInvokesContainer = document.createElement("div");
+    numInvokesContainer.className = "numInvokesContainer";
+    numInvokesContainer.style = "display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 100px; margin-bottom: 100px;"
+
+    let numInvokesLabel = document.createElement("label");
+    numInvokesLabel.classname = "numInvokesLabel";
+    numInvokesLabel.innerHTML = "Number of times this method invlokes another method: ";
+    numInvokesLabel.style = "margin-right: 10px;";
+
+    let numInvokesInput = document.createElement("input");
+    numInvokesInput.type = "text";
+    numInvokesInput.id = "numInvokesInput";
+    numInvokesInput.placeholder = "type a number";
+
+    numInvokesInput.addEventListener("input", function() {
+      numInvokes = this.value;
+  })
+
+
+    popUp_MenuMethod.appendChild(Box);
+    Box.appendChild(Title);
+    Box.appendChild(methodNameContainer);
+    methodNameContainer.appendChild(methodNameLabel);
+    methodNameContainer.appendChild(methodNameInput);
+
+    Box.appendChild(numAttributesContainer);
+    numAttributesContainer.appendChild(NumAttributesLabel);
+    numAttributesContainer.appendChild(NumAttributesInput);
+
+    Box.appendChild(numInvokesContainer);
+    numInvokesContainer.appendChild(numInvokesLabel);
+    numInvokesContainer.appendChild(numInvokesInput);
+
+    Box.appendChild(buttons);
+    buttons.appendChild(CancelButton);
+    buttons.appendChild(SaveButton);
+
+
+    SaveButton.addEventListener("click", function() {
+      numDisAttributesArray.push(numDisAttributes);
+      numInvokesArray.push(numInvokes);
+
+      var attribIndex = numDisAttributesArray.indexOf(previousNumDisAttributes);
+      var invokeIndex = numInvokesArray.indexOf(previousNumInvokes);
+  
+      if(attribIndex !== -1 && invokeIndex !== -1)
+      {
+        numDisAttributesArray.splice(attribIndex, 1);
+        numInvokesArray.splice(invokeIndex, 1);
+      }
+
+
+      popUp_MenuMethod.style.display = "none";
+    });
+    numDisAttributesArray
+    CancelButton.addEventListener("click", function() {
+      popUp_MenuMethod.style.display = "none";
+    });
+  }
 }
-
-
-function addMethodAttribute(popUp_MenuMethod)
-{
-  let buttons = document.createElement("div");
-  buttons.className = "d-grid gap-2 d-md-block";
-  buttons.style = "margin-bottom: 10px; background-color: #ffffff;"
-
-  let CancelButton = document.createElement("button");
-  CancelButton.className = "btn btn-danger";
-  CancelButton.innerHTML = "Cancel";
-  CancelButton.style = "margin-right: 100px; width: 100px;"
-
-  let SaveButton = document.createElement("button");
-  SaveButton.className = "btn btn-primary";
-  SaveButton.innerHTML = "Save";
-  SaveButton.style = "margin-left: 100px; width: 100px;"
-
-  let Box = document.createElement("div");
-  Box.className = "Box";
-  Box.style.backgroundColor = "#ffffff";
-
-  let Title = document.createElement("div");
-  Title.className = "header";
-  Title.innerHTML = "Method Information";
-  Title.style.textAlign = "center";
-
-
-
-  let methodNameContainer = document.createElement("div");
-  methodNameContainer.className = "methodNameContainer";
-  methodNameContainer.style = "display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 20px;, margin-bottom: 40px; background-color: #ffffff;"
-
-  let methodNameLabel = document.createElement("label");
-  methodNameLabel.classname = "methodNameLabel";
-  methodNameLabel.innerHTML = "Name:  ";
-  methodNameLabel.style = "margin-right: 15px;";
-
-  let methodNameInput = document.createElement("input");
-  methodNameInput.type = "text";
-  methodNameInput.id = "methodName";
-  methodNameInput.placeholder = "Enter method name";
-
-
-
-  let numAttributesContainer = document.createElement("div");
-  numAttributesContainer.className = "numAttributesContainer";
-  numAttributesContainer.style = "display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 100px; margin-bottom: 30px; background-color: #ffffff;"
-
-  let NumAttributesLabel = document.createElement("label");
-  NumAttributesLabel.classname = "NumAttributes";
-  NumAttributesLabel.innerHTML = "Number of distinct accessed attributes:";
-  NumAttributesLabel.style = "margin-right: 10px;";
-
-
-  let NumAttributesInput = document.createElement("input");
-  NumAttributesInput.type = "text";
-  NumAttributesInput.id = "NumAttributesInput";
-
-
-  let numInvokesContainer = document.createElement("div");
-  numInvokesContainer.className = "numInvokesContainer";
-  numInvokesContainer.style = "display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 100px; margin-bottom: 100px;"
-
-  let numInvokesLabel = document.createElement("label");
-  numInvokesLabel.classname = "numInvokesLabel";
-  numInvokesLabel.innerHTML = "Number of times this method invlokes another method: ";
-  numInvokesLabel.style = "margin-right: 10px;";
-
-
-  let numInvokesInput = document.createElement("input");
-  numInvokesInput.type = "text";
-  numInvokesInput.id = "numInvokesInput";
-
-  popUp_MenuMethod.appendChild(Box);
-  Box.appendChild(Title);
-  Box.appendChild(methodNameContainer);
-  methodNameContainer.appendChild(methodNameLabel);
-  methodNameContainer.appendChild(methodNameInput);
-
-  Box.appendChild(numAttributesContainer);
-  numAttributesContainer.appendChild(NumAttributesLabel);
-  numAttributesContainer.appendChild(NumAttributesInput);
-
-  Box.appendChild(numInvokesContainer);
-  numInvokesContainer.appendChild(numInvokesLabel);
-  numInvokesContainer.appendChild(numInvokesInput);
-
-  Box.appendChild(buttons);
-  buttons.appendChild(CancelButton);
-  buttons.appendChild(SaveButton);
-
-
-  SaveButton.addEventListener("click", function() {
-    popUp_MenuMethod.style.display = "none";
-  });
-
-  CancelButton.addEventListener("click", function() {
-    popUp_MenuMethod.style.display = "none";
-  });
-}
-
 }
 
 
