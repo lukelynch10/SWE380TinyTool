@@ -24,7 +24,7 @@
     </div>
 
     <!--Flexbox to keep everything in the middle-->
-    <div class = "centerBox">
+    <div class = "center-box">
 
     <!--Component Name text box-->
     <div class = "compNameInput">
@@ -57,15 +57,15 @@
             <label class="form-check-label" for="inlineCheckbox2">2</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option3">
             <label class="form-check-label" for="inlineCheckbox1">3</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option4">
             <label class="form-check-label" for="inlineCheckbox2">4</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option5">
             <label class="form-check-label" for="inlineCheckbox2">5</label>
         </div>
         <br><br><br>
@@ -77,12 +77,32 @@
 
     <!--Cohesion Data-->
     <h3>Cohesion Data</h3>
-    <div class = coupForm>
+    <div class = "coupForm">
         <div class = "d-grid gap-2 col-6 mx-auto">
             <!--Methods Button-->
             <button type ="button" class ="btn btn-secondary">Methods</button>
             <!--Add a Method Button-->
             <button tpye = "button" class = "btn btn-secondary">+Add a Method</button>
+
+            <!--Add Methods pop-up-->
+            <form class = "coupForm">
+                <div class = "methodName">
+                    <input type = "text" id = "methodName" placeholder="Method Name">
+                </div><br>
+
+                <label for = "numAttributes">Number of distinct accessed attributes:</label>
+                <input type= "text" id= "numAttributes" placeholder = "type a number"><br><br>
+
+                <label for = "numMethod">Number of times this method invokes another method:</label>
+                <input type= "text" id= "numMethod" placeholder = "type a number"><br><br>
+
+                <div class = "d-grid gap-2 d-md-block">
+                    <!--Cancel button-->
+                    <button type ="button" class ="btn btn-danger">Cancel</button>
+                    <!--Save Button-->
+                    <button tpye = "button" class = "btn btn-primary">Save</button>
+                </div>
+            <form>
         </div>
     </div>
 
