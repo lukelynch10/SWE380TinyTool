@@ -46,7 +46,7 @@ function calLCOM4(DistinctAttributes, Invokes, CohesionLevel) {
 
   
   $('#totalCohesion').text(tally(cohesionAdded));
-  return lcom4.toFixed(2);
+  return lcom4.toFixed(5);
 }
 
 
@@ -55,16 +55,16 @@ function calculateCoup(numberDepencies, DepencyLevel, couplinglevel) {
   let n = parseInt(numberDepencies)
   let i = parseInt(DepencyLevel);
   couplinglevel = i + n / (n + 1);
-  $("#couplingResult").text(couplinglevel.toFixed(2));
+  $("#couplingResult").text(couplinglevel.toFixed(5));
   couplingAdded += couplinglevel;
 
   $('#totalCoupling').text(tally(couplingAdded));
-  return couplinglevel.toFixed(2);
+  return couplinglevel.toFixed(5);
   }
 
 // tally
 function tally(SumValue){
-  return (SumValue / ComponentCount).toFixed(2);
+  return (SumValue / ComponentCount).toFixed(5);
 }
 
 
