@@ -1,18 +1,19 @@
 
 .container {
     margin-bottom: 20px;
-    background-color: #ffffff;
+    background-color: #fdfbee;
   }
   
 .dropdown {
       margin-bottom: 20px;
-      background-color: #ffffff;
+      background-color: #fdfbee;
     }
 
   .card{
     background-color: #e4e4e4;
   }
   
+
   
 .btn-primary.help {
       margin-bottom: 20px;
@@ -82,5 +83,9 @@
     color: #000000;
     text-align: center;
   }
+
+body{
+    background-color: #fdfbee;
+}
   
   
