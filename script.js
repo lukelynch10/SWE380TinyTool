@@ -4,41 +4,7 @@ let coupling = "";
 let lcom4Added = 0;
 let couplingAdded = 0;
 let cohesionAdded = 0;
-
-function calculateLCOM4() {
-    let meanAccesses = parseFloat($('#meanAccesses').val());
-    let methodAttributesStr = $('#methodAttributes').val().trim();
-    let methodInvocationsStr = $('#methodInvocations').val().trim();
-
-    if (isNaN(meanAccesses) || methodAttributesStr === '' || methodInvocationsStr === '') {
-        alert('Please fill all fields with valid numbers');
-        return;
-    }
-
-    let methodAttributes = methodAttributesStr.split(',').map(function(item) {
-        return parseInt(item.trim());
-    });
-
-
-    let methodInvocations = methodInvocationsStr.split(',').map(function(item) {
-        return parseInt(item.trim());
-    });
-
-    let sumAttributesSquared = 0;
-    let sumInvocationsSquared = 0;
-
-    for (let i = 0; i < methodAttributes.length; i++) {
-        sumAttributesSquared += Math.pow(methodAttributes[i], 2);
-        sumInvocationsSquared += Math.pow(methodInvocations[i], 2);
-    }
-
-    let numerator = Math.max(0, sumAttributesSquared - sumInvocationsSquared);
-    let denominator = Math.max(1, (meanAccesses - (sumInvocationsSquared / meanAccesses)) * (meanAccesses - 1));
-
-    let lcom4 = numerator / denominator;
-    
-    $('#result').text(lcom4.toFixed(10));
-  }
+let ComponentCount = 0;
 
 function calLCOM4(DistinctAttributes, Invokes, CohesionLevel) {
   let methodAttributes = DistinctAttributes;
@@ -51,8 +17,6 @@ function calLCOM4(DistinctAttributes, Invokes, CohesionLevel) {
       return;
   }
 
-  console.log(methodAttributes);
-  console.log(methodInvocations);
 
   let sumAttributesSquared = 0;
   let sumInvocationsSquared = 0;
@@ -65,46 +29,25 @@ function calLCOM4(DistinctAttributes, Invokes, CohesionLevel) {
       meanAccesses = meanAccesses + parseInt(methodAttributes[i]);
   }
 
-    // console.log(meanAccesses);
 
   meanAccesses = parseFloat(meanAccesses / methodAttributes.length);
 
-  console.log(meanAccesses);
 
   let numerator = Math.max(0, sumAttributesSquared - sumInvocationsSquared);
   let denominator = Math.max(1, (meanAccesses - (sumInvocationsSquared / meanAccesses)) * (meanAccesses - 1));
 
   let lcom4 = numerator / denominator;
 
+  if (isNaN(lcom4)) {
+    lcom4 = 0;
+  }
+
   cohesionAdded += lcom4;
-  $('#totalCohesion').text(cohesionAdded.toFixed(2));
+
+  
+  $('#totalCohesion').text(tally(cohesionAdded));
   return lcom4.toFixed(2);
-
-
 }
-
-
-
-
-//Coupling Fenton and Melton
-$(document).ready(function(){
-    $("#couplingForm").submit(function(event){
-      event.preventDefault();
-      let n = parseInt($("#dependencies").val());
-      let i = parseInt($("#dependencyLevel").val());
-      coupling = calculateCoupling(n, i);
-      $("#couplingResult").text(coupling.toFixed(2));
-      couplingAdded += coupling;
-      $('#totalCoupling').text(couplingAdded);
-      
-    });
-
-    function calculateCoupling(n, i) {
-      return i + n / (n + 1);
-    }
-  });
-
-
 
 
 //Coupling Fenton and Melton
@@ -114,32 +57,21 @@ function calculateCoup(numberDepencies, DepencyLevel, couplinglevel) {
   couplinglevel = i + n / (n + 1);
   $("#couplingResult").text(couplinglevel.toFixed(2));
   couplingAdded += couplinglevel;
-  $('#totalCoupling').text(couplingAdded.toFixed(2));
+
+  $('#totalCoupling').text(tally(couplingAdded));
   return couplinglevel.toFixed(2);
   }
 
-
 // tally
-function tally(){
-    let lcom4Text = $('#result').text();
-    let lcom4number = Number(lcom4Text);
-    lcom4Added += lcom4number;
-    $("#totalCohesion").text(lcom4Added); 
+function tally(SumValue){
+  return (SumValue / ComponentCount).toFixed(2);
 }
 
-//jquery
-$(document).ready(function(){
-    $('#calculate').click(function(){
-        calculateLCOM4();
-        tally();
-    });
-});
 
 
 
 function addComponent() {
   // Create a new container element
-
   let numDepencies = 0;
   let DepencyLevel = 0;
   let couplingLevelValue = 0;
@@ -148,6 +80,8 @@ function addComponent() {
 
   let numDisAttributesArray = [];
   let numInvokesArray = [];
+
+  ComponentCount += 1;
 
   let container = document.createElement("div");
   container.className = "container-component";
@@ -223,8 +157,19 @@ function addComponent() {
   deleteButton.addEventListener('click', function() {
     couplingAdded -= couplingLevelValue;
     cohesionAdded -= cohesionFormValue;
-    $('#totalCoupling').text(couplingAdded.toFixed(2));
-    $('#totalCohesion').text(cohesionAdded.toFixed(2));
+    ComponentCount -= 1;
+
+    if(ComponentCount === 0)
+    {
+      $('#totalCoupling').text(0);
+      $('#totalCohesion').text(0);
+    }
+
+    else
+    {
+      $('#totalCoupling').text(tally(couplingAdded));
+      $('#totalCohesion').text(tally(cohesionAdded));
+    }
     container.remove();
   });
 
@@ -283,11 +228,16 @@ function add_componentNameInput(dropdownMenu, centerContainer, Name)
   cohesionValue.className = "cohesionValue";
 
 
+  let componentNameLabel = document.createElement("label");
+  componentNameLabel.className = "componentNameLabel";
+  componentNameLabel.innerHTML = "Component Name: ";
+  componentNameLabel.style = "margin-bottom: 10px; text-align: center; font-size: 20px; font-weight: bold;"
 
   let componentName = document.createElement("input");
   componentName.type = "text";
   componentName.id = "componentName";
   componentName.placeholder = "Enter component name";
+
 
   componentName.addEventListener("input", function() {
     CompName = this.value;
@@ -315,8 +265,8 @@ function add_componentNameInput(dropdownMenu, centerContainer, Name)
   headerCohesionContainer.appendChild(cohesionLabel);
   headerCohesionContainer.appendChild(cohesionValue);
 
+  centerContainer.appendChild(componentNameLabel);
   centerContainer.appendChild(componentName);
-
   centerContainer.appendChild(buttons);
   buttons.appendChild(CancelButton);
   buttons.appendChild(SaveButton);
@@ -508,7 +458,6 @@ function addMethod(cohesion_Form)
 
   let previousNumDisAttributes = 0;
   let previousNumInvokes = 0;
-
 
   let container = document.createElement("div");
   container.className = "container-method";

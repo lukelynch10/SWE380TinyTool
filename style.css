@@ -249,3 +249,22 @@ body, html {
   display: none;
   size : 20px;
 }
+
+.TotalCohesionCoupling
+{
+  padding: 30px;
+  border-radius: 10px;
+  min-width: 80%;
+  text-align: center;
+  background-color: #fffedf;
+}
+
+h3
+{
+  font-size: 25px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 30px;
+  margin-top: 30px;
+
+}
