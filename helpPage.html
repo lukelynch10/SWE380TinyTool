@@ -97,7 +97,8 @@
             <div class="collapse" id="dropdownContent3">
                 <div class="card card-body">
                     <T2>LCOM4 Formula</T2>
-                    <p> The LCOM4 formula is a metric used to measure the levels of cohesion in a class. It does this by measuring the number of connected components in a class.
+                    <h3>CAUTION: when entering in the information for the methods, if there are more invokations of other methods by a method then there are distinct attributes, then this formula with say 0 (good cohesion) which is not correct, this is a limitation of this formula</h3>
+                    <p> The LCOM4 formula is used to measure the levels of cohesion in a class. It does this by measuring the number of connected components in a class.
                     A connection is a set of related methods. Ideally there should only be one connected component in each class. The formula is below. 
                     In order to use the formula you must:
                     </p>
@@ -133,7 +134,7 @@
             <div class="collapse" id="dropdownContent4">
                 <div class="card card-body">
                     <T2> Fenton and Melton Formula</T2>
-                    <p> The Fenton and Melton metric is used to measure the degree of an architectures coupling. It does this by obtaining the number of direct dependencies 
+                    <p> The Fenton and Melton formula is used to measure the degree of an architectures coupling. It does this by obtaining the number of direct dependencies 
                         that exist between two components as well as a 1-5 value that indicates the level of coupling that exists between the two components. These 
                         values are plugged into the formula below with:
                     </p>
@@ -255,7 +256,7 @@
             </button>
             <div class="collapse" id="dropdownContent8">
                 <div class="card card-body">
-                    
+                    <h3>CAUTION: when entering in the information for the methods, if there are more invokations of other methods by a method then there are distinct attributes, then this formula with say 0 (good cohesion) which is not correct, this is a limitation of this formula</h3>
                     <T1>Cohesion</T1>
                     <p> The cohesion score is a measure of how well the components in your program are organized. Using the LCOM4 forumla we can determine how well the components
                         are organized. A score of 1 indicates that the components are well organized and that the methods in the components are closely related. A score of 2 or
